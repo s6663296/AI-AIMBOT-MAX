@@ -62,7 +62,17 @@ class SettingsManager:
         self.window.recoil_control_enabled = Config.get("recoil_control_enabled", False)
         self.window.recoil_x_strength = Config.get("recoil_x_strength", 0)
         self.window.recoil_y_strength = Config.get("recoil_y_strength", 5)
-        self.window.recoil_delay = Config.get("recoil_delay", 10)
+        raw_recoil_delay = Config.get("recoil_delay", 10)
+        if isinstance(raw_recoil_delay, str):
+            try:
+                raw_recoil_delay = float(raw_recoil_delay.strip())
+            except ValueError:
+                raw_recoil_delay = 10
+        if isinstance(raw_recoil_delay, float):
+            # Backward compatibility: older configs used seconds (e.g., 0.01).
+            if raw_recoil_delay <= 1:
+                raw_recoil_delay = raw_recoil_delay * 1000
+        self.window.recoil_delay = int(round(raw_recoil_delay))
         self.window.recoil_trigger_keys = Config.get("recoil_trigger_keys", "VK_LBUTTON")
 
         # --- 疊加層與顯示 ---

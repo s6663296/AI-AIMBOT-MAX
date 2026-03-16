@@ -49,7 +49,7 @@ class _Config:
             "recoil_control_enabled": False,
             "recoil_y_strength": 5,
             "recoil_x_strength": 0,
-            "recoil_delay": 0.01,
+            "recoil_delay": 10,
             "recoil_trigger_keys": "VK_LBUTTON",
             "overlay_color_r": 0,
             "overlay_color_g": 255,
