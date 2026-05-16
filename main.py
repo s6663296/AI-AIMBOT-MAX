@@ -1,4 +1,4 @@
-﻿import sys
+import sys
 import os
 import ctypes
 import cv2
@@ -26,6 +26,7 @@ from PyQt6.QtGui import QImage, QPixmap, QIcon, QCursor
 from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QScrollArea
 import atexit
 
+from Module.auto_trigger import AutoTrigger
 from Module.logger import logger
 from Module.settings_manager import SettingsManager
 from Module.tray_manager import TrayManager
@@ -62,6 +63,7 @@ class main(QMainWindow):
     aimbot_hotkey_toggle_requested = pyqtSignal()
  
     def __init__(self):
+        self.auto_trigger = AutoTrigger()
         super().__init__()
         self._null_status_bar = _NullStatusBar()
         uic.loadUi(resource_path("ui/main_window.ui"), self)
@@ -690,6 +692,14 @@ class main(QMainWindow):
                     }
 
                 self.new_aim_logic.process_data(target_to_aim)
+                # 自动扳机
+                if target_to_aim is not None:
+                    self.auto_trigger.check_and_shoot(
+                        target_to_aim['center_x'],
+                        target_to_aim['center_y'],
+                        center_x_screen,
+                        center_y_screen
+                    )
 
                 # 計算完整延遲：從實際截圖開始到追蹤完畢（準備調用滑鼠移動）
                 # 使用節流控制更新頻率，避免過於頻繁的UI更新影響效能
