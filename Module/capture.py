@@ -197,7 +197,7 @@ class ScreenCaptureManager:
             
             frame_times = deque(maxlen=100)
             last_fps_display = time.time()
-            capture_fps = max(120, int(self.target_fps))
+            capture_fps = int(self.target_fps)
             
             # --- Windows 高精度計時器設定 ---
             timer_handle = None
